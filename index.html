@@ -4,8 +4,19 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Garrett Spach Web Portfolio</title>
-    <meta name="description" content="Garrett Spach Web Portfolio" />
+    <title>Garrett Spach — Audio Post-Production Specialist</title>
+    <meta
+      name="description"
+      content="Garrett Spach is an audio post-production specialist — dialogue repair, mixing & mastering, and sound design for podcasts and audiobooks. 250+ episodes engineered, 200M+ views/downloads."
+    />
+
+    <meta property="og:title" content="Garrett Spach — Audio Post-Production Specialist" />
+    <meta
+      property="og:description"
+      content="Dialogue repair and mixing engineer with a composer/sound-designer's ear. 250+ episodes engineered, 200M+ views/downloads, 200M+ streams as a producer."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="./assets/img/avatar.jpg" />
 
     <link rel="stylesheet" href="css/style.css" />
 
@@ -24,7 +35,7 @@
           <div class="header__logo-img-cont">
             <img
               src="./assets/img/avatar.jpg"
-              alt="Garrett Spach Logo Image"
+              alt="Garrett Spach"
               class="header__logo-img"
             />
           </div>
@@ -36,12 +47,10 @@
               <a href="./index.html" class="header__link"> Home </a>
             </li>
             <li class="header__link-wrapper">
-              <a href="./index.html#projects" class="header__link">
-                Projects
-              </a>
+              <a href="./index.html#work" class="header__link"> Work </a>
             </li>
             <li class="header__link-wrapper">
-              <a href="./index.html#about" class="header__link">About </a>
+              <a href="./index.html#listen" class="header__link"> Listen </a>
             </li>
             <li class="header__link-wrapper">
               <a href="./index.html#contact" class="header__link"> Contact </a>
@@ -67,15 +76,12 @@
             <li class="header__sm-menu-link">
               <a href="./index.html"> Home </a>
             </li>
-
             <li class="header__sm-menu-link">
-              <a href="./index.html#about"> About </a>
+              <a href="./index.html#work"> Work </a>
             </li>
-
             <li class="header__sm-menu-link">
-              <a href="./index.html#projects"> Projects </a>
+              <a href="./index.html#listen"> Listen </a>
             </li>
-
             <li class="header__sm-menu-link">
               <a href="./index.html#contact"> Contact </a>
             </li>
@@ -87,41 +93,45 @@
     <!-- HERO -->
     <section class="home-hero">
       <div class="home-hero__content">
-        <h1 class="heading-primary">Hi, I'm Garrett Spach</h1>
+        <h1 class="heading-primary">Garrett Spach</h1>
+        <p class="home-hero__title">Audio Post-Production Specialist</p>
         <div class="home-hero__info">
           <p class="text-primary">
-            Frontend developer with 10+ years in high-pressure creative
-            industries. From 200M+ streams in music to building modern apps with
-            <strong>React & Tailwind</strong>.
+            Dialogue repair and mixing engineer with a composer/sound-designer's
+            ear — equally strong on the spoken-word and music sides of a mix.
           </p>
         </div>
         <div class="home-hero__cta">
-          <a href="./#projects" class="btn btn--bg">See my projects</a>
+          <a href="mailto:garrettspach@gmail.com" class="btn btn--bg btn--theme"
+            >Get in touch</a
+          >
         </div>
+        <ul class="home-hero__stats">
+          <li class="home-hero__stat">
+            <span class="home-hero__stat-num">250+</span>
+            <span class="home-hero__stat-label">episodes engineered</span>
+          </li>
+          <li class="home-hero__stat">
+            <span class="home-hero__stat-num">200M+</span>
+            <span class="home-hero__stat-label">views / downloads</span>
+          </li>
+          <li class="home-hero__stat">
+            <span class="home-hero__stat-num">200M+</span>
+            <span class="home-hero__stat-label">streams as a producer</span>
+          </li>
+        </ul>
       </div>
       <div class="home-hero__socials">
         <div class="home-hero__social">
           <a
             href="https://www.linkedin.com/in/garrettspach/"
             target="_blank"
-            class="home-hero__social-icon-link"
+            rel="noreferrer"
+            class="home-hero__social-icon-link home-hero__social-icon-link--bd-none"
           >
             <img
               src="./assets/img/linkedin-ico.png"
-              alt="icon"
-              class="home-hero__social-icon"
-            />
-          </a>
-        </div>
-        <div class="home-hero__social">
-          <a
-            href="https://github.com/spockb"
-            target="_blank"
-            class="home-hero__social-icon-link"
-          >
-            <img
-              src="./assets/img/github-ico.png"
-              alt="icon"
+              alt="LinkedIn"
               class="home-hero__social-icon"
             />
           </a>
@@ -132,156 +142,180 @@
       </div>
     </section>
 
-    <section id="projects" class="projects sec-pad">
+    <!-- WHAT I DO -->
+    <section id="what-i-do" class="services sec-pad">
       <div class="main-container">
         <h2 class="heading heading-sec heading-sec__mb-bg">
-          <span class="heading-sec__main">Projects</span>
-          <span class="heading-sec__sub">
-            All my projects include links to the code and live version. Click
-            the button to learn more about each one.
-          </span>
+          <span class="heading-sec__main">What I Do</span>
         </h2>
-
-        <div class="projects__content">
-          <div class="projects__row">
-            <div class="projects__row-img-cont">
-              <img
-                src="./assets/img/flipline.webp"
-                alt="Software Screenshot"
-                class="projects__row-img"
-                loading="lazy"
-              />
-            </div>
-            <div class="projects__row-content">
-              <h3 class="projects__row-content-title">
-                Flipline Real Estate App
-              </h3>
-              <p class="projects__row-content-desc">
-                Full-stack app for managing private real estate listings.
-                Features include authentication, property CRUD, and responsive
-                design using React, Tailwind, Express, and PostgreSQL.
-              </p>
-              <a
-                href="./project-1.html"
-                class="btn btn--med btn--theme dynamicBgClr"
-                >Learn more</a
-              >
-            </div>
+        <div class="services__grid">
+          <div class="service-card">
+            <h3 class="service-card__title">Dialogue Repair &amp; Restoration</h3>
+            <p class="service-card__desc">
+              Cleaning up noisy, clipped, or inconsistent dialogue so voices
+              sound clear and natural, episode after episode.
+            </p>
           </div>
-          <div class="projects__row">
-            <div class="projects__row-img-cont">
-              <img
-                src="./assets/img/bearriver.webp"
-                alt="Software Screenshot"
-                class="projects__row-img"
-                loading="lazy"
-              />
-            </div>
-            <div class="projects__row-content">
-              <h3 class="projects__row-content-title">
-                Bear River Bookkeeping
-              </h3>
-              <p class="projects__row-content-desc">
-                A responsive business site built for a bookkeeping firm,
-                designed with a component-based approach in Astro. Features a
-                clean, professional UI using the Codestitch component library
-                (HTML, CSS, JavaScript) adapted into reusable Astro components
-                for easier maintenance.
-              </p>
-              <a
-                href="./project-2.html"
-                class="btn btn--med btn--theme dynamicBgClr"
-                >Learn more</a
-              >
-            </div>
+          <div class="service-card">
+            <h3 class="service-card__title">
+              Mixing &amp; Mastering to Delivery Specs
+            </h3>
+            <p class="service-card__desc">
+              Balanced, broadcast-ready mixes mastered to loudness and delivery
+              specs for podcast platforms and audiobook distributors.
+            </p>
           </div>
-          <div class="projects__row">
-            <div class="projects__row-img-cont">
-              <img
-                src="./assets/img/southtech.webp"
-                alt="Software Screenshot"
-                class="projects__row-img"
-                loading="lazy"
-              />
-            </div>
-            <div class="projects__row-content">
-              <h3 class="projects__row-content-title">Southtech Electric</h3>
-              <p class="projects__row-content-desc">
-                A responsive business site built for a bookkeeping firm,
-                designed with a component-based approach in Astro. Features a
-                clean, professional UI using the Codestitch component library
-                (HTML, CSS, JavaScript) adapted into reusable Astro components
-                for easier maintenance.
-              </p>
-              <a
-                href="./project-3.html"
-                class="btn btn--med btn--theme dynamicBgClr"
-                >Learn more</a
-              >
-            </div>
+          <div class="service-card">
+            <h3 class="service-card__title">Sound Design</h3>
+            <p class="service-card__desc">
+              Stingers, ambiences, and sound effects built to match a show's
+              identity and support the story without pulling focus.
+            </p>
+          </div>
+          <div class="service-card">
+            <h3 class="service-card__title">Original Music &amp; Scoring</h3>
+            <p class="service-card__desc">
+              Original scores and themes composed to picture or to a show's
+              tone, from underscore to full openers.
+            </p>
           </div>
         </div>
       </div>
     </section>
 
-    <section id="about" class="about sec-pad">
+    <!-- SELECTED WORK / CREDITS -->
+    <section id="work" class="credits sec-pad">
+      <div class="main-container">
+        <h2 class="heading heading-sec heading-sec__mb-bg">
+          <span class="heading-sec__main">Selected Work</span>
+        </h2>
+
+        <div class="credits__list">
+          <article class="credit">
+            <div class="credit__head">
+              <h3 class="credit__org">TMG Studios</h3>
+              <span class="credit__meta">Los Angeles · In-house engineer 2018–2021, ongoing specialist contract work through present</span>
+            </div>
+            <ul class="credit__points">
+              <li>
+                Engineered every show on the network: TMG Podcast, TMG Love
+                Island, Trillionaire Mindset, Brooke and Connor Make A Podcast.
+              </li>
+              <li>
+                250+ episodes mixed, mastered, and repaired in Pro Tools +
+                iZotope RX; 200M+ combined views/downloads.
+              </li>
+              <li>
+                Designed the automated processing pipeline that dramatically
+                cut episode turnaround and trained the editorial team on it.
+              </li>
+              <li>Scored an original short film for the network.</li>
+            </ul>
+          </article>
+
+          <article class="credit">
+            <div class="credit__head">
+              <h3 class="credit__org">"Company Lot" — Noel Miller</h3>
+            </div>
+            <ul class="credit__points">
+              <li>
+                Original music, sound effects, and background ambiences
+                composed to the show's dystopian identity.
+              </li>
+              <li>
+                Built retro sci-fi sound assets for the TMG Podcast brand.
+              </li>
+            </ul>
+          </article>
+
+          <article class="credit">
+            <div class="credit__head">
+              <h3 class="credit__org">Spock (music project)</h3>
+            </div>
+            <ul class="credit__points">
+              <li>
+                Producer with 200M+ streams, an EMPIRE publishing deal (2025),
+                and international touring.
+              </li>
+              <li>
+                Produced records spanning hip-hop artists to metal bands.
+              </li>
+            </ul>
+          </article>
+
+          <article class="credit">
+            <div class="credit__head">
+              <h3 class="credit__org">Spock Sounds &amp; Tonetreat</h3>
+            </div>
+            <ul class="credit__points">
+              <li>
+                Founded two commercial sample/preset lines: thousands of
+                original samples and presets across ~15 packs, thousands sold.
+              </li>
+              <li>
+                Defined catalog naming conventions and loudness standards.
+              </li>
+              <li>Produced educational sound-design content on Tonetreat's YouTube.</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- LISTEN -->
+    <section id="listen" class="listen sec-pad">
+      <div class="main-container">
+        <h2 class="heading heading-sec heading-sec__mb-bg">
+          <span class="heading-sec__main">Listen</span>
+          <span class="heading-sec__sub">
+            A few samples of the work — before/after dialogue repair, sound
+            design, and mixes.
+          </span>
+        </h2>
+
+        <div class="tracks" id="tracks">
+          <!-- populated by player.js from AUDIO_TRACKS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- TOOLS -->
+    <section id="tools" class="tools-sec sec-pad">
       <div class="main-container">
         <h2 class="heading heading-sec heading-sec__mb-med">
-          <span class="heading-sec__main">About Me</span>
-          <span class="heading-sec__sub">
-            <p>
-              I'm Garrett Spach, a frontend developer based in Los Angeles,
-              specializing in React, JavaScript, and Tailwind. Before tech, I
-              built a decade-long career in music production, earning 200M+
-              streams and touring internationally. That experience taught me how
-              to deliver complex projects, manage clients, and thrive under
-              tight deadlines — skills I now bring to every web app I build.
-            </p>
-          </span>
+          <span class="heading-sec__main">Tools</span>
         </h2>
-        <div class="about__content">
-          <div class="about__content-main">
-            <h3 class="about__content-title">Get to know me!</h3>
-            <div class="about__content-details">
-              <p class="about__content-details-para">
-                When I'm not coding, I'm usually producing music, training at
-                the gym, or deep into an audiobook. Lately I've been hooked on
-                fantasy and sci-fi series like Brandon Sanderson's books and
-                Dungeon Crawler Carl.
-              </p>
-            </div>
-            <a href="./#contact" class="btn btn--med btn--theme dynamicBgClr"
-              >Contact</a
-            >
-          </div>
-          <div class="about__content-skills">
-            <h3 class="about__content-title">My Skills</h3>
-            <div class="skills">
-              <div class="skills__skill">HTML</div>
-              <div class="skills__skill">CSS</div>
-              <div class="skills__skill">JavaScript</div>
-              <div class="skills__skill">React</div>
-              <div class="skills__skill">Git</div>
-              <div class="skills__skill">Tailwind CSS</div>
-              <div class="skills__skill">Astro</div>
-              <div class="skills__skill">Netlify</div>
-              <div class="skills__skill">Vercel</div>
-              <div class="skills__skill">Railway</div>
-            </div>
-          </div>
+        <div class="tools">
+          <div class="tools__tool">Pro Tools</div>
+          <div class="tools__tool">iZotope RX</div>
+          <div class="tools__tool">Ableton Live</div>
+          <div class="tools__tool">Reaper</div>
+          <div class="tools__tool">Adobe Audition</div>
         </div>
       </div>
     </section>
 
-    <section id="contact" class="contact sec-pad dynamicBg">
+    <!-- CONTACT -->
+    <section id="contact" class="contact sec-pad">
       <div class="main-container">
         <h2 class="heading heading-sec heading-sec__mb-med">
           <span class="heading-sec__main heading-sec__main--lt">Contact</span>
           <span class="heading-sec__sub heading-sec__sub--lt">
-            If you're interested in connecting about roles or projects, you can
-            reach me directly at garrettspach@gmail.com.
+            Available for remote work (US). Reach out about a project or role.
           </span>
         </h2>
+        <div class="contact__cta">
+          <a href="mailto:garrettspach@gmail.com" class="btn btn--bg btn--email"
+            >garrettspach@gmail.com</a
+          >
+          <a
+            href="https://www.linkedin.com/in/garrettspach/"
+            target="_blank"
+            rel="noreferrer"
+            class="btn btn--med btn--theme-inv contact__linkedin"
+            >LinkedIn</a
+          >
+        </div>
       </div>
     </section>
 
@@ -302,18 +336,7 @@
                 <img
                   class="main-footer__icon"
                   src="./assets/img/linkedin-ico.png"
-                  alt="icon"
-                />
-              </a>
-              <a
-                target="_blank"
-                rel="noreferrer"
-                href="https://github.com/spockb"
-              >
-                <img
-                  class="main-footer__icon"
-                  src="./assets/img/github-ico.png"
-                  alt="icon"
+                  alt="LinkedIn"
                 />
               </a>
             </div>
@@ -321,14 +344,16 @@
           <div class="main-footer__row main-footer__row-2">
             <h4 class="heading heading-sm text-lt">Garrett Spach</h4>
             <p class="main-footer__short-desc">
-              Frontend developer in Los Angeles building clean, user-focused
-              apps with React and Tailwind.
+              Audio post-production specialist — dialogue repair, mixing &amp;
+              mastering, and sound design. Remote (US).
             </p>
           </div>
         </div>
       </div>
     </footer>
 
+    <script src="./tracks-data.js"></script>
+    <script src="./player.js"></script>
     <script src="./index.js"></script>
   </body>
 </html>
