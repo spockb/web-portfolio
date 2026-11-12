@@ -29,21 +29,21 @@ export const services: Service[] = [
     kind: 'format',
     name: 'YouTube show audio post',
     short:
-      'Full mix to picture for multi-mic shows: dialogue cleanup, mic-by-mic editing, music, sound effects and a master ready for upload.',
+      'Full mix to picture for multi-mic shows: dialogue cleanup, mic-by-mic editing, your music and sound effects balanced, and a master ready for upload.',
     metaTitle: 'YouTube Show Audio Post & Mixing',
     metaDescription:
       'Audio post-production for YouTube series and video podcasts. Multi-lav dialogue cleanup, music and SFX mixed to picture. 2–5 day turnaround.',
     h1: 'Audio post for YouTube shows',
     intro:
-      'Your editor cuts the picture. I make it sound like a real production: every voice clear, the room under control, music and effects sitting where they should, and a master that holds up on phones, TVs and headphones.',
+      'Your editor cuts the picture. I make it sound like a real production: every voice clear, the room under control, your music and effects sitting where they should, and a master that holds up on phones, TVs and headphones.',
     priceFrom: 450,
     priceUnit: 'per episode',
     includes: [
       'Dialogue cleanup and noise reduction on every mic',
       'Dialogue editing by hand, so only the right mics are open',
       'Level matching between speakers and scenes',
-      'Music and sound effects mixed to picture',
-      'Additional sound effects and music where the cut needs them',
+      'The music and sound effects in your edit mixed to picture',
+      'Light sound effects added where the cut needs them',
       'Master at YouTube loudness, checked on small speakers',
       'Mix file synced to your timeline, stems on request',
     ],
@@ -65,7 +65,7 @@ export const services: Service[] = [
       'Runtime of the episode',
       'Number of microphones',
       'Recording conditions (room, wind, background noise)',
-      'How much music and sound design is needed',
+      'How much sound effects work is needed',
       'Turnaround time',
     ],
     faqs: [
@@ -75,7 +75,7 @@ export const services: Service[] = [
       },
       {
         q: 'Can you add music and sound effects, or only mix what is there?',
-        a: 'Both. I mix what your editor has placed and add effects, ambience or music where the cut needs it. I also compose original themes and cues if you want a sound that belongs to your show.',
+        a: 'The mix covers the music and effects your editor has placed, plus light sound effects where the cut needs them. Original music and scoring are a separate service, quoted on their own, for when you want a sound that belongs to your show.',
       },
       {
         q: 'What loudness do you master to?',
