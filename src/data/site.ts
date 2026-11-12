@@ -13,8 +13,8 @@ export const site = {
   description:
     'Remote audio editing, repair, mixing and mastering for YouTube shows, podcasts, guided meditations and courses. 250+ episodes engineered, 200M+ views.',
   turnaround: '2–5 business days',
-  // ASSUMPTION: confirm before launch.
-  revisions: 'One round of revisions is included with every mix.',
+  revisions:
+    'Yes. Send your notes and I will keep revising until you are happy with how it sounds. That covers changes to the work we agreed on. New material or a re-cut of the edit is quoted separately.',
 };
 
 export const stats = [
@@ -47,7 +47,7 @@ export const process = [
   },
   {
     title: 'Review and deliver',
-    body: 'You get finished files ready to upload or drop into your edit, plus stems if you need them. Notes come back, I turn them around, you publish.',
+    body: 'You get finished files ready to upload or drop into your edit, plus stems if you need them. Send notes and I revise until you are happy with it.',
   },
 ];
 
