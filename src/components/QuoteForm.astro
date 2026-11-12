@@ -1,0 +1,277 @@
+---
+// Netlify Forms picks this up at deploy time from the data-netlify attribute.
+// Submissions appear in the Netlify dashboard; add an email notification there.
+import { jobs } from '../data/services';
+
+const projectTypes = [
+  'YouTube show or video series',
+  'Podcast',
+  'Guided meditation or narration',
+  'Course or training video',
+  'Audiobook',
+  'Business or one-off video',
+  'Something else',
+];
+
+const conditions = [
+  'Quiet studio or treated room',
+  'Large or echoey room',
+  'Outdoors or windy',
+  'Loud background noise',
+  'Remote guests (Zoom, Riverside)',
+  'Lavalier mics on several people',
+];
+---
+
+<form class="form" name="quote" method="POST" action="/thanks/" data-netlify="true" netlify-honeypot="company-site">
+  <input type="hidden" name="form-name" value="quote" />
+  <p class="hp" aria-hidden="true">
+    <label>Leave this empty <input name="company-site" tabindex="-1" autocomplete="off" /></label>
+  </p>
+
+  <fieldset>
+    <legend>About you</legend>
+    <div class="row">
+      <div class="field">
+        <label for="q-name">Name</label>
+        <input id="q-name" name="name" type="text" autocomplete="name" required />
+      </div>
+      <div class="field">
+        <label for="q-email">Email</label>
+        <input id="q-email" name="email" type="email" autocomplete="email" required />
+      </div>
+    </div>
+    <div class="row">
+      <div class="field">
+        <label for="q-show">Project or company <span class="opt">optional</span></label>
+        <input id="q-show" name="show" type="text" autocomplete="organization" />
+      </div>
+      <div class="field">
+        <label for="q-link">Link to your work <span class="opt">optional</span></label>
+        <input id="q-link" name="show-link" type="url" inputmode="url" placeholder="https://" />
+      </div>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>About the project</legend>
+    <div class="row">
+      <div class="field">
+        <label for="q-type">What is it?</label>
+        <select id="q-type" name="project-type" required>
+          <option value="" disabled selected>Choose one</option>
+          {projectTypes.map((t) => <option>{t}</option>)}
+        </select>
+      </div>
+      <div class="field">
+        <label for="q-service">What do you need?</label>
+        <select id="q-service" name="service" required>
+          <option value="" disabled selected>Choose one</option>
+          {jobs.map((s) => <option value={s.name}>{s.name}</option>)}
+          <option value="Repair, edit, mix and master">All of it: repair, edit, mix and master</option>
+          <option value="Not sure">Not sure yet</option>
+        </select>
+      </div>
+    </div>
+    <div class="row">
+      <div class="field">
+        <label for="q-frequency">How often?</label>
+        <select id="q-frequency" name="frequency">
+          <option>One-off project</option>
+          <option>Weekly</option>
+          <option>Every two weeks</option>
+          <option>Monthly</option>
+          <option>A full season or series</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="q-runtime">Length of the audio</label>
+        <select id="q-runtime" name="runtime">
+          <option>Under 15 minutes</option>
+          <option>15–30 minutes</option>
+          <option>30–60 minutes</option>
+          <option>60–90 minutes</option>
+          <option>Over 90 minutes</option>
+        </select>
+      </div>
+    </div>
+    <div class="row">
+      <div class="field">
+        <label for="q-mics">Number of mics</label>
+        <select id="q-mics" name="mics">
+          <option>1</option>
+          <option>2</option>
+          <option>3–4</option>
+          <option>5–6</option>
+          <option>7 or more</option>
+          <option>Not sure</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="q-deadline">Deadline <span class="opt">optional</span></label>
+        <input id="q-deadline" name="deadline" type="text" placeholder="e.g. next Friday, or ongoing" />
+      </div>
+    </div>
+
+    <div class="field">
+      <span class="label" id="q-cond-label">Recording conditions <span class="opt">tick all that apply</span></span>
+      <div class="checks" role="group" aria-labelledby="q-cond-label">
+        {
+          conditions.map((c) => (
+            <label class="check">
+              <input type="checkbox" name="conditions[]" value={c} />
+              <span>{c}</span>
+            </label>
+          ))
+        }
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="q-sample">Link to a clip or the files <span class="opt">optional</span></label>
+      <input id="q-sample" name="sample-link" type="url" inputmode="url" placeholder="Dropbox, Drive, Frame.io" />
+    </div>
+
+    <div class="field">
+      <label for="q-message">Anything else?</label>
+      <textarea id="q-message" name="message" rows="5" placeholder="What is going wrong with the audio, or what you want it to sound like."
+      ></textarea>
+    </div>
+  </fieldset>
+
+  <div class="form__foot">
+    <button class="btn btn--primary" type="submit">Send quote request</button>
+    <p class="muted">I reply within one business day.</p>
+  </div>
+</form>
+
+<style>
+  .form {
+    display: grid;
+    gap: 2rem;
+  }
+
+  .hp {
+    position: absolute;
+    left: -9999px;
+  }
+
+  fieldset {
+    display: grid;
+    gap: 1.1rem;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    min-width: 0;
+  }
+
+  legend {
+    padding: 0;
+    margin-bottom: 1.1rem;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  .row {
+    display: grid;
+    gap: 1.1rem;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+  }
+
+  .field {
+    display: grid;
+    gap: 0.45rem;
+    min-width: 0;
+  }
+
+  label,
+  .label {
+    font-size: 0.9375rem;
+    font-weight: 600;
+  }
+
+  .opt {
+    font-weight: 400;
+    color: var(--muted);
+    font-size: 0.8125rem;
+    margin-left: 0.25rem;
+  }
+
+  input:not([type='checkbox']),
+  select,
+  textarea {
+    width: 100%;
+    min-height: 3rem;
+    padding: 0.7rem 0.9rem;
+    border: 1px solid var(--line-strong);
+    border-radius: var(--radius-sm);
+    background: var(--bg);
+    color: var(--text);
+    font: inherit;
+    font-size: 1rem;
+  }
+
+  textarea {
+    resize: vertical;
+    line-height: 1.5;
+  }
+
+  ::placeholder {
+    color: var(--muted);
+    opacity: 0.8;
+  }
+
+  input:focus-visible,
+  select:focus-visible,
+  textarea:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 1px;
+    border-color: var(--accent);
+  }
+
+  .checks {
+    display: grid;
+    gap: 0.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+  }
+
+  .check {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    min-height: 2.75rem;
+    padding: 0.5rem 0.8rem;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    font-weight: 400;
+    color: var(--text-soft);
+    cursor: pointer;
+  }
+
+  .check:has(input:checked) {
+    border-color: var(--accent);
+    color: var(--text);
+    background: var(--accent-wash);
+  }
+
+  .check input {
+    width: 1.1rem;
+    height: 1.1rem;
+    accent-color: var(--accent);
+    flex: none;
+  }
+
+  .form__foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem 1.5rem;
+  }
+
+  .form__foot p {
+    font-size: 0.9375rem;
+  }
+</style>

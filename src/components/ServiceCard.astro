@@ -1,0 +1,56 @@
+---
+import type { Service } from '../data/services';
+
+interface Props {
+  service: Service;
+  index: number;
+}
+
+const { service, index } = Astro.props;
+---
+
+<a class="service card" href={`/services/${service.slug}/`}>
+  <span class="service__num mono" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
+  <h3>{service.name}</h3>
+  <p class="muted">{service.short}</p>
+  <p class="service__price mono">From ${service.priceFrom} <span>{service.priceUnit}</span></p>
+  <span class="arrow-link">Details</span>
+</a>
+
+<style>
+  .service {
+    display: grid;
+    gap: 0.9rem;
+    align-content: start;
+    padding: clamp(1.4rem, 3vw, 2rem);
+    text-decoration: none;
+    color: var(--text);
+    transition: border-color 0.2s, transform 0.2s, background 0.2s;
+  }
+
+  .service:hover {
+    color: var(--text);
+    border-color: var(--accent);
+    background: var(--surface-2);
+    transform: translateY(-3px);
+  }
+
+  .service__num {
+    color: var(--accent);
+  }
+
+  .service__price {
+    color: var(--text);
+    padding-top: 0.9rem;
+    border-top: 1px solid var(--line);
+    margin-top: auto;
+  }
+
+  .service__price span {
+    color: var(--muted);
+  }
+
+  .service p.muted {
+    font-size: 0.975rem;
+  }
+</style>

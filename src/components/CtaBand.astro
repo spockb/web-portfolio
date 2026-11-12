@@ -1,0 +1,67 @@
+---
+import Waveform from './Waveform.astro';
+import { site } from '../data/site';
+
+interface Props {
+  heading?: string;
+  body?: string;
+}
+
+const {
+  heading = "Let's make your audio sound right.",
+  body = `Tell me about the project and share a clip. I will reply with what is fixable and a flat quote. Typical turnaround is ${site.turnaround}.`,
+} = Astro.props;
+---
+
+<section class="cta">
+  <div class="container">
+    <div class="cta__box">
+      <div class="cta__text">
+        <h2>{heading}</h2>
+        <p class="lede">{body}</p>
+        <div class="cta__actions">
+          <a class="btn btn--primary" href="/contact/">Get a quote</a>
+          <a class="btn btn--ghost" href={`mailto:${site.email}`}>Email me</a>
+        </div>
+      </div>
+      <div class="cta__wave">
+        <Waveform bars={64} labels={false} />
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cta {
+    padding-block: var(--section);
+  }
+
+  .cta__box {
+    display: grid;
+    gap: 2rem;
+    padding: clamp(1.75rem, 5vw, 4rem);
+    border: 1px solid var(--line);
+    border-radius: calc(var(--radius) * 1.5);
+    background:
+      radial-gradient(40rem 20rem at 100% 0%, var(--accent-wash), transparent 70%),
+      var(--surface);
+    overflow: hidden;
+  }
+
+  .cta__text {
+    display: grid;
+    gap: 1.1rem;
+    max-width: 40rem;
+  }
+
+  .cta__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 0.5rem;
+  }
+
+  .cta__wave {
+    opacity: 0.9;
+  }
+</style>

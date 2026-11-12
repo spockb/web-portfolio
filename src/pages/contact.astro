@@ -1,0 +1,135 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import QuoteForm from '../components/QuoteForm.astro';
+import { site } from '../data/site';
+
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'ContactPage',
+    url: `${site.url}/contact/`,
+    about: { '@id': `${site.url}/#business` },
+  },
+];
+---
+
+<BaseLayout
+  title="Get a Quote for Audio Post"
+  description="Request a flat quote for audio repair, editing, mixing, mastering or original music. Share a clip and get a free, honest assessment within one business day."
+  crumbs={[{ name: 'Contact', href: '/contact/' }]}
+  schema={schema}
+>
+  <section class="page-hero">
+    <div class="container page-hero__inner">
+      <p class="eyebrow">Get a quote</p>
+      <h1>Tell me about the project.</h1>
+      <p class="lede">
+        A few details let me give you a real price instead of a range. If you can share a clip, I will listen for free
+        and tell you what is fixable.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container layout">
+      <div class="card form-card">
+        <QuoteForm />
+      </div>
+
+      <aside class="aside">
+        <div class="aside__block">
+          <h2>What happens next</h2>
+          <ol class="next">
+            <li>I read your request and listen to any sample you send.</li>
+            <li>You get a flat quote and a delivery date by email.</li>
+            <li>You send the files and I get to work. Typical turnaround is {site.turnaround}.</li>
+          </ol>
+        </div>
+        <div class="aside__block">
+          <h2>Prefer email?</h2>
+          <p><a href={`mailto:${site.email}`}>{site.email}</a></p>
+        </div>
+        <div class="aside__block">
+          <h2>Where</h2>
+          <p class="muted">{site.location}. I work with clients anywhere.</p>
+        </div>
+      </aside>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .layout {
+    display: grid;
+    gap: 2.5rem;
+    align-items: start;
+  }
+
+  .form-card {
+    padding: clamp(1.25rem, 4vw, 2.5rem);
+  }
+
+  .aside {
+    display: grid;
+    gap: 2rem;
+  }
+
+  .aside__block {
+    display: grid;
+    gap: 0.75rem;
+  }
+
+  .aside h2 {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .next {
+    display: grid;
+    gap: 0.9rem;
+    counter-reset: next;
+    color: var(--text-soft);
+  }
+
+  .next li {
+    counter-increment: next;
+    position: relative;
+    padding-left: 2.25rem;
+  }
+
+  .next li::before {
+    content: counter(next);
+    position: absolute;
+    left: 0;
+    top: 0.1em;
+    width: 1.5rem;
+    height: 1.5rem;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--accent-wash);
+    color: var(--accent);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+  }
+
+  .aside a {
+    overflow-wrap: anywhere;
+  }
+
+  @media (min-width: 62rem) {
+    .layout {
+      grid-template-columns: 1.7fr 1fr;
+      gap: 4rem;
+    }
+
+    .aside {
+      position: sticky;
+      top: 6rem;
+    }
+  }
+</style>

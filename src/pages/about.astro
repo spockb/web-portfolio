@@ -1,0 +1,253 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CtaBand from '../components/CtaBand.astro';
+import headshot from '../assets/garrett-spach.jpg';
+import studio from '../assets/garrett-spach-studio.jpg';
+import { site, tools } from '../data/site';
+
+const timeline = [
+  {
+    when: '2018–2021',
+    what: 'In-house engineer, TMG Studios',
+    detail:
+      'Engineered every show on the network, including TMG Podcast, TMG Love Island, Trillionaire Mindset and Brooke and Connor Make A Podcast.',
+  },
+  {
+    when: '2021–now',
+    what: 'Independent audio post',
+    detail:
+      'Contract specialist for TMG Studios and Noel Miller: dialogue repair and mixing for Subjects and Hot Laps, original music and sound design for Company Lot.',
+  },
+  {
+    when: 'Alongside',
+    what: 'Record producer',
+    detail:
+      'Producing as Spock: 200M+ streams, an EMPIRE publishing deal in 2025, international touring, and records from hip-hop to metal.',
+  },
+  {
+    when: 'Alongside',
+    what: 'Sound designer',
+    detail:
+      'Founder of the Spock Sounds and Tonetreat sample and preset lines: thousands of original sounds across about 15 packs.',
+  },
+];
+
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'AboutPage',
+    url: `${site.url}/about/`,
+    mainEntity: {
+      '@type': 'Person',
+      '@id': `${site.url}/#person`,
+      name: site.name,
+      jobTitle: 'Audio post-production engineer',
+      description:
+        'Audio post-production engineer and record producer specializing in repair, editing, mixing and mastering of spoken audio.',
+      url: `${site.url}/about/`,
+      sameAs: [site.linkedin, site.spotify],
+      knowsAbout: ['Dialogue editing', 'Audio mixing', 'Audio mastering', 'Sound design', 'Music production', ...tools],
+    },
+  },
+];
+---
+
+<BaseLayout
+  title="About Garrett Spach, Audio Post Engineer"
+  rawTitle
+  description="Garrett Spach is a remote audio engineer for spoken audio: former in-house engineer at TMG Studios, 250+ episodes mixed, producer with 200M+ streams."
+  crumbs={[{ name: 'About', href: '/about/' }]}
+  schema={schema}
+>
+  <section class="page-hero">
+    <div class="container intro">
+      <div class="page-hero__inner">
+        <p class="eyebrow">About</p>
+        <h1>Hi, I'm Garrett.</h1>
+        <p class="lede">
+          I make recordings of people talking sound finished. I have engineered more than 250 episodes that have been
+          watched and downloaded over 200 million times, and I work remotely with creators, producers, editors and
+          anyone with a recording that needs help.
+        </p>
+        <div class="page-hero__actions">
+          <a class="btn btn--primary" href="/contact/">Work with me</a>
+          <a class="btn btn--ghost" href={site.linkedin} rel="noopener me">LinkedIn</a>
+          <a class="btn btn--ghost" href={site.spotify} rel="noopener me">Spotify</a>
+        </div>
+      </div>
+      <div class="intro__photo">
+        <Image
+          src={headshot}
+          alt="Garrett Spach"
+          widths={[320, 480, 853]}
+          sizes="(min-width: 56rem) 20rem, 60vw"
+          loading="eager"
+        />
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container two-col">
+      <div class="prose">
+        <h2>Two halves of one job</h2>
+        <p>
+          Most engineers come up on one side of the glass. I work on both. On the post side, I spent three years as the
+          in-house engineer at TMG Studios in Los Angeles, mixing every show on the network, and I still mix for them
+          and for Noel Miller today.
+        </p>
+        <p>
+          On the music side, I produce records and design sounds for other producers. That is where the ear for
+          arrangement comes from: knowing when music should carry a moment and when it should get out of the way of
+          someone talking.
+        </p>
+        <p>
+          Put together, it means you can hand me a rough recording with noisy dialogue and no music, and get back
+          something that sounds finished.
+        </p>
+        <h2>How I work</h2>
+        <p>
+          Remotely, on a flat quote, with a typical turnaround of {site.turnaround}. I fit into the tools your editor
+          already uses, and I will always tell you honestly what can and cannot be fixed before you spend anything.
+        </p>
+      </div>
+
+      <aside class="side">
+        <div class="side__photo">
+          <Image
+            src={studio}
+            alt="Garrett Spach working at a studio workstation with headphones on"
+            widths={[480, 800, 1280]}
+            sizes="(min-width: 56rem) 28rem, 92vw"
+          />
+        </div>
+        <div class="card tools">
+          <h2 class="tools__label mono muted">Tools</h2>
+          <ul class="tag-list">
+            {tools.map((t) => <li class="tag">{t}</li>)}
+          </ul>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section section--raised">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Background</p>
+        <h2>Experience.</h2>
+      </div>
+      <ol class="timeline">
+        {
+          timeline.map((t) => (
+            <li>
+              <span class="mono timeline__when">{t.when}</span>
+              <div>
+                <h3>{t.what}</h3>
+                <p class="muted">{t.detail}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <CtaBand />
+</BaseLayout>
+
+<style>
+  .intro {
+    display: grid;
+    gap: 2.5rem;
+    align-items: center;
+  }
+
+  .intro__photo {
+    width: min(100%, 20rem);
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    border-radius: calc(var(--radius) * 1.5);
+    border: 1px solid var(--line-strong);
+  }
+
+  .intro__photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 22%;
+  }
+
+  .two-col {
+    display: grid;
+    gap: 3rem;
+    align-items: start;
+  }
+
+  .side {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  .side__photo {
+    overflow: hidden;
+    border-radius: var(--radius);
+    border: 1px solid var(--line);
+  }
+
+  .tools {
+    padding: 1.5rem;
+    display: grid;
+    gap: 1rem;
+  }
+
+  .tools__label {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .timeline {
+    display: grid;
+    max-width: 52rem;
+    border-top: 1px solid var(--line);
+  }
+
+  .timeline li {
+    display: grid;
+    gap: 0.5rem;
+    padding-block: 1.5rem;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .timeline li div {
+    display: grid;
+    gap: 0.4rem;
+  }
+
+  .timeline__when {
+    color: var(--accent);
+  }
+
+  @media (min-width: 40rem) {
+    .timeline li {
+      grid-template-columns: 9rem 1fr;
+      gap: 1.5rem;
+    }
+  }
+
+  @media (min-width: 56rem) {
+    .intro {
+      grid-template-columns: 1fr auto;
+      gap: 4rem;
+    }
+
+    .two-col {
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 4rem;
+    }
+  }
+</style>

@@ -1,0 +1,587 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Waveform from '../components/Waveform.astro';
+import ServiceCard from '../components/ServiceCard.astro';
+import WorkCard from '../components/WorkCard.astro';
+import BeforeAfter from '../components/BeforeAfter.astro';
+import Testimonials from '../components/Testimonials.astro';
+import ProcessSteps from '../components/ProcessSteps.astro';
+import FaqList from '../components/FaqList.astro';
+import CtaBand from '../components/CtaBand.astro';
+import headshot from '../assets/garrett-spach.jpg';
+import studio from '../assets/garrett-spach-studio.jpg';
+import { site, stats, homeFaqs, tools } from '../data/site';
+import { services, jobs } from '../data/services';
+import { work } from '../data/work';
+
+const featured = work.filter((w) => w.featured);
+
+const audiences = [
+  {
+    title: 'YouTube shows and video series',
+    body: 'Multi-mic shoots mixed to picture, with music and effects.',
+    href: '/services/youtube-show-audio-post/',
+  },
+  {
+    title: 'Podcasts',
+    body: 'Audio and video podcasts, one episode or every week.',
+    href: '/services/podcast-editing-mixing/',
+  },
+  {
+    title: 'Guided meditations and narration',
+    body: 'Meditations, courses, audiobooks and voiceover.',
+    href: '/services/guided-meditation-narration/',
+  },
+  {
+    title: 'One-off recordings',
+    body: 'A pitch video, an interview, a talk. One file is fine.',
+    href: '/services/audio-repair/',
+  },
+];
+
+const problems = [
+  {
+    title: 'Wind and outdoor noise',
+    body: 'Gusts across the mic, traffic, engines. I pull the voice out and keep it sounding like a person.',
+  },
+  {
+    title: 'Echoey rooms',
+    body: 'Warehouses, bare offices, kitchens. De-reverb takes the room off the voice without thinning it.',
+  },
+  {
+    title: 'Hiss, hum and background noise',
+    body: 'Air conditioning, computer fans, a buzz on the line. Gone, including in the quiet parts where it shows most.',
+  },
+  {
+    title: 'Levels all over the place',
+    body: 'One person whispers, another shouts. Every voice ends up at the same comfortable volume.',
+  },
+];
+
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'ProfessionalService',
+    '@id': `${site.url}/#business`,
+    name: site.brand,
+    url: site.url,
+    description: site.description,
+    email: site.email,
+    image: `${site.url}/og.png`,
+    priceRange: '$$',
+    areaServed: [
+      { '@type': 'Country', name: 'United States' },
+      { '@type': 'Place', name: 'Worldwide (remote)' },
+    ],
+    founder: { '@id': `${site.url}/#person` },
+    sameAs: [site.linkedin],
+    knowsAbout: [
+      'Audio post-production',
+      'Dialogue editing',
+      'Audio editing',
+      'Podcast mixing',
+      'Audio repair',
+      'Noise reduction',
+      'Sound design',
+      'Audio mastering',
+    ],
+    hasOfferCatalog: {
+      '@type': 'OfferCatalog',
+      name: 'Audio post-production services',
+      itemListElement: services.map((s) => ({
+        '@type': 'Offer',
+        url: `${site.url}/services/${s.slug}/`,
+        itemOffered: { '@type': 'Service', name: s.name, description: s.short },
+      })),
+    },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    '@id': `${site.url}/#person`,
+    name: site.name,
+    url: `${site.url}/about/`,
+    jobTitle: 'Audio post-production engineer',
+    sameAs: [site.linkedin, site.spotify],
+    knowsAbout: tools,
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: site.brand,
+    url: site.url,
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: homeFaqs.map((f) => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a },
+    })),
+  },
+];
+---
+
+<BaseLayout
+  title="Remote Audio Editing, Mixing & Repair | Garrett Spach"
+  rawTitle
+  description={site.description}
+  schema={schema}
+>
+  <section class="hero">
+    <div class="container hero__grid">
+      <div class="hero__text">
+        <p class="eyebrow">Remote audio editing, repair and mixing</p>
+        <h1>Clean, finished audio for anything <em>with a voice in it.</em></h1>
+        <p class="lede">
+          I'm Garrett Spach. I repair, edit, mix and master spoken audio for YouTube shows, podcasts, guided meditations,
+          courses and one-off videos. Send me the recording, however rough, and get back something ready to publish.
+        </p>
+        <div class="hero__actions">
+          <a class="btn btn--primary" href="/contact/">Get a quote</a>
+          <a class="btn btn--ghost" href="/work/">See the work</a>
+        </div>
+        <dl class="stats">
+          {
+            stats.map((s) => (
+              <div class="stat">
+                <dt>{s.label}</dt>
+                <dd>{s.value}</dd>
+              </div>
+            ))
+          }
+        </dl>
+      </div>
+
+      <div class="hero__media">
+        <div class="portrait">
+          <Image
+            src={headshot}
+            alt="Garrett Spach, audio post-production engineer"
+            widths={[360, 540, 853]}
+            sizes="(min-width: 62rem) 26rem, 80vw"
+            loading="eager"
+            fetchpriority="high"
+          />
+        </div>
+        <div class="hero__wave card">
+          <Waveform bars={72} />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="credits" aria-label="Credits">
+    <div class="container credits__inner">
+      <p class="mono muted">Credits include</p>
+      <ul class="credits__list">
+        <li>TMG Studios</li>
+        <li>Noel Miller</li>
+        <li>Subjects</li>
+        <li>Hot Laps</li>
+        <li>TMG Podcast</li>
+        <li>Brooke and Connor Make A Podcast</li>
+        <li>Company Lot</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">What I fix</p>
+        <h2>The recording is done. The audio has problems.</h2>
+        <p class="lede">
+          Recording it again is rarely an option. These are the problems people bring me most, and most of them can be
+          fixed.
+        </p>
+      </div>
+      <ul class="problems">
+        {
+          problems.map((p) => (
+            <li class="problem card">
+              <h3>{p.title}</h3>
+              <p class="muted">{p.body}</p>
+            </li>
+          ))
+        }
+      </ul>
+      <div class="clip-check card">
+        <div>
+          <h3>Not sure it can be saved? Send me a clip.</h3>
+          <p class="muted">I will listen for free and tell you honestly what is fixable and what it would cost.</p>
+        </div>
+        <a class="btn btn--primary" href="/contact/">Send a clip</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--raised">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Services</p>
+        <h2>One person for the whole soundtrack.</h2>
+        <p class="lede">
+          Repair, editing, mixing, sound design and music from the same engineer, so nothing gets lost between
+          handoffs.
+        </p>
+      </div>
+      <div class="services-grid">
+        {jobs.map((s, i) => <ServiceCard service={s} index={i} />)}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Who I work with</p>
+        <h2>If someone is talking in it, I can help.</h2>
+        <p class="lede">
+          Most of my credits are shows and podcasts. The same repair and mixing work applies to any recording built
+          around a voice.
+        </p>
+      </div>
+      <ul class="audiences">
+        {
+          audiences.map((a) => (
+            <li>
+              <a class="audience" href={a.href}>
+                <h3>{a.title}</h3>
+                <p class="muted">{a.body}</p>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="section section--raised">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Selected work</p>
+        <h2>Shows with millions of views, and difficult audio.</h2>
+      </div>
+      <div class="work-grid">
+        {featured.map((w) => <WorkCard item={w} />)}
+      </div>
+      <p class="more"><a class="arrow-link" href="/work/">All case studies</a></p>
+    </div>
+  </section>
+
+  <BeforeAfter />
+
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">How it works</p>
+        <h2>Simple, whatever you are making.</h2>
+      </div>
+      <ProcessSteps />
+    </div>
+  </section>
+
+  <Testimonials />
+
+  <section class="section section--raised">
+    <div class="container about">
+      <div class="about__media">
+        <Image
+          src={studio}
+          alt="Garrett Spach mixing at a studio workstation, wearing headphones"
+          widths={[480, 800, 1280]}
+          sizes="(min-width: 62rem) 34rem, 92vw"
+        />
+      </div>
+      <div class="about__text">
+        <p class="eyebrow">About</p>
+        <h2>An engineer who is also a producer.</h2>
+        <p class="lede">
+          I was the in-house engineer at TMG Studios from 2018 to 2021 and have mixed their shows on contract ever
+          since. Outside of post I produce records, with more than 200 million streams.
+        </p>
+        <p class="muted">
+          That mix of backgrounds is why the dialogue comes out clean and the music and effects land where they should.
+        </p>
+        <ul class="tag-list">
+          {tools.map((t) => <li class="tag">{t}</li>)}
+        </ul>
+        <a class="arrow-link" href="/about/">More about me</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Questions</p>
+        <h2>Before you get in touch.</h2>
+      </div>
+      <FaqList faqs={homeFaqs} />
+    </div>
+  </section>
+
+  <CtaBand />
+</BaseLayout>
+
+<style>
+  .hero {
+    position: relative;
+    padding-block: clamp(2.5rem, 7vw, 5.5rem) clamp(3rem, 7vw, 5.5rem);
+    background:
+      radial-gradient(50rem 28rem at 90% 0%, var(--accent-wash), transparent 70%),
+      var(--bg);
+    overflow: hidden;
+  }
+
+  .hero__grid {
+    display: grid;
+    gap: clamp(2.5rem, 6vw, 4rem);
+    align-items: center;
+  }
+
+  .hero__text {
+    display: grid;
+    gap: 1.4rem;
+  }
+
+  h1 em {
+    font-style: normal;
+    color: var(--accent);
+  }
+
+  .hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+    justify-content: start;
+    gap: 1rem clamp(1.25rem, 4vw, 2.75rem);
+    margin: 1rem 0 0;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--line);
+  }
+
+  .stat {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 0.2rem;
+  }
+
+  .stat dd {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(1.4rem, 3.6vw, 2.1rem);
+    font-weight: 650;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  .stat dt {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+    max-width: 9rem;
+    line-height: 1.4;
+  }
+
+  .hero__media {
+    position: relative;
+    justify-self: center;
+    width: min(100%, 26rem);
+    padding-bottom: 3.5rem;
+  }
+
+  .portrait {
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    border-radius: calc(var(--radius) * 1.5);
+    border: 1px solid var(--line-strong);
+  }
+
+  .portrait img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 22%;
+  }
+
+  .hero__wave {
+    position: absolute;
+    inset: auto -0.5rem 0 -0.5rem;
+    padding: 1rem 1.1rem 0.9rem;
+    background: color-mix(in srgb, var(--surface) 92%, transparent);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55);
+  }
+
+  .credits {
+    border-block: 1px solid var(--line);
+    background: var(--bg-raised);
+    padding-block: 1.5rem;
+  }
+
+  .credits__inner {
+    display: grid;
+    gap: 1rem;
+    align-items: center;
+  }
+
+  .credits__list {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.6rem 1.75rem;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1.0625rem;
+    letter-spacing: -0.01em;
+    color: var(--text-soft);
+  }
+
+  .problems {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  @media (min-width: 36rem) {
+    .problems {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 68rem) {
+    .problems {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .problem {
+    display: grid;
+    gap: 0.6rem;
+    align-content: start;
+    padding: 1.5rem;
+  }
+
+  .problem p {
+    font-size: 0.975rem;
+  }
+
+  .clip-check {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.25rem;
+    margin-top: 1.25rem;
+    padding: 1.5rem;
+  }
+
+  .clip-check div {
+    display: grid;
+    gap: 0.4rem;
+  }
+
+  .audiences {
+    display: grid;
+    border-top: 1px solid var(--line);
+  }
+
+  .audience {
+    display: grid;
+    gap: 0.4rem;
+    padding: 1.4rem 0;
+    border-bottom: 1px solid var(--line);
+    color: var(--text);
+    text-decoration: none;
+  }
+
+  .audience h3 {
+    transition: color 0.2s;
+  }
+
+  .audience:hover h3 {
+    color: var(--accent);
+  }
+
+  .audience p {
+    font-size: 0.975rem;
+  }
+
+  @media (min-width: 48rem) {
+    .audiences {
+      grid-template-columns: repeat(2, 1fr);
+      column-gap: 3rem;
+    }
+  }
+
+  .services-grid {
+    display: grid;
+    gap: 1.25rem;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+  }
+
+  .work-grid {
+    display: grid;
+    gap: 1.25rem;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr));
+  }
+
+  .more {
+    margin-top: 2rem;
+  }
+
+  .about {
+    display: grid;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: center;
+  }
+
+  .about__media {
+    overflow: hidden;
+    border-radius: calc(var(--radius) * 1.5);
+    border: 1px solid var(--line);
+  }
+
+  .about__media img {
+    width: 100%;
+    aspect-ratio: 3 / 2;
+    object-fit: cover;
+  }
+
+  .about__text {
+    display: grid;
+    gap: 1.1rem;
+    justify-items: start;
+  }
+
+  @media (min-width: 62rem) {
+    .hero__grid {
+      grid-template-columns: 1.25fr 0.9fr;
+    }
+
+    .hero__media {
+      justify-self: end;
+    }
+
+    .credits__inner {
+      grid-template-columns: auto 1fr;
+      gap: 2rem;
+    }
+
+    .about {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+</style>

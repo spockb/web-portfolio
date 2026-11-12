@@ -1,0 +1,92 @@
+---
+// Decorative waveform: a noisy raw recording on the left resolving into a
+// clean mix on the right. Generated at build time from a fixed seed.
+interface Props {
+  bars?: number;
+  labels?: boolean;
+}
+
+const { bars = 96, labels = true } = Astro.props;
+
+let seed = 7;
+const rand = () => {
+  seed = (seed * 16807) % 2147483647;
+  return (seed - 1) / 2147483646;
+};
+
+const step = 6;
+const width = bars * step;
+const height = 100;
+const split = Math.floor(bars * 0.48);
+
+// A speech-like envelope: phrases with pauses between them.
+const envelope = (i: number) => {
+  const phrase = Math.sin(i * 0.19) * 0.5 + 0.5;
+  const syllable = Math.sin(i * 0.9) * 0.5 + 0.5;
+  const gate = Math.sin(i * 0.31 + 1) > -0.82 ? 1 : 0.1;
+  return (0.25 + phrase * 0.5 + syllable * 0.25) * gate;
+};
+
+const data = Array.from({ length: bars }, (_, i) => {
+  const raw = i < split;
+  const env = envelope(i);
+  let h: number;
+  if (raw) {
+    const noiseFloor = 0.22 + rand() * 0.2;
+    const spike = rand() > 0.9 ? 1 : 0;
+    h = Math.max(noiseFloor, env * (0.5 + rand() * 0.7), spike);
+  } else {
+    h = Math.max(0.05, env * 0.82);
+  }
+  const px = Math.min(1, h) * (height - 8);
+  return { x: i * step + 1.5, y: (height - px) / 2, h: px, raw };
+});
+---
+
+<div class="waveform">
+  <svg viewBox={`0 0 ${width} ${height}`} preserveAspectRatio="none" aria-hidden="true">
+    {data.map((b) => <rect class={b.raw ? 'raw' : 'clean'} x={b.x} y={b.y} width="3" height={b.h} rx="1.5" />)}
+  </svg>
+  {
+    labels && (
+      <div class="waveform__labels" aria-hidden="true">
+        <span>Raw recording</span>
+        <span class="clean-label">Finished mix</span>
+      </div>
+    )
+  }
+</div>
+
+<style>
+  .waveform {
+    display: grid;
+    gap: 0.6rem;
+  }
+
+  svg {
+    width: 100%;
+    height: clamp(3.5rem, 9vw, 5.5rem);
+  }
+
+  .raw {
+    fill: var(--noise);
+  }
+
+  .clean {
+    fill: var(--accent);
+  }
+
+  .waveform__labels {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .clean-label {
+    color: var(--accent);
+  }
+</style>

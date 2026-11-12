@@ -1,0 +1,227 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import YouTubeLite from '../../components/YouTubeLite.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { work, type CaseStudy } from '../../data/work';
+import { getService } from '../../data/services';
+import { site } from '../../data/site';
+
+export function getStaticPaths() {
+  return work.map((item) => ({ params: { slug: item.slug }, props: { item } }));
+}
+
+interface Props {
+  item: CaseStudy;
+}
+
+const { item } = Astro.props;
+const related = item.services.map(getService);
+const others = work.filter((w) => w.slug !== item.slug);
+
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'CreativeWork',
+    name: `${item.title}: audio post-production case study`,
+    headline: `${item.title} case study`,
+    description: item.metaDescription,
+    url: `${site.url}/work/${item.slug}/`,
+    author: { '@id': `${site.url}/#person`, '@type': 'Person', name: site.name },
+    about: item.tags,
+  },
+];
+---
+
+<BaseLayout
+  title={`${item.title} Case Study`}
+  description={item.metaDescription}
+  crumbs={[
+    { name: 'Work', href: '/work/' },
+    { name: item.title, href: `/work/${item.slug}/` },
+  ]}
+  schema={schema}
+>
+  <section class="page-hero">
+    <div class="container page-hero__inner">
+      <p class="eyebrow"><a href="/work/">Work</a></p>
+      <h1>{item.title}</h1>
+      <p class="lede">{item.summary}</p>
+      <dl class="meta">
+        <div>
+          <dt class="mono muted">Client</dt>
+          <dd>{item.client}</dd>
+        </div>
+        <div>
+          <dt class="mono muted">Role</dt>
+          <dd>{item.role}</dd>
+        </div>
+      </dl>
+      <ul class="tag-list">
+        {item.tags.map((t) => <li class="tag">{t}</li>)}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container layout">
+      <div class="story">
+        <div class="block">
+          <h2>The challenge</h2>
+          <p>{item.challenge}</p>
+        </div>
+        <div class="block">
+          <h2>What I did</h2>
+          <ul class="check-list">
+            {item.approach.map((a) => <li>{a}</li>)}
+          </ul>
+        </div>
+        <div class="block">
+          <h2>Services used</h2>
+          <ul class="links">
+            {
+              related.map((s) => (
+                <li>
+                  <a class="arrow-link" href={`/services/${s.slug}/`}>
+                    {s.name}
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+      </div>
+
+      <div class="videos">
+        <h2 class="mono muted videos__label">Listen to the result</h2>
+        {
+          item.videos.map((v) => (
+            <figure>
+              <YouTubeLite id={v.id} title={v.title} start={v.start} />
+              <figcaption class="muted">{v.title}</figcaption>
+            </figure>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--raised more">
+    <div class="container">
+      <p class="eyebrow">More work</p>
+      <ul class="more__list">
+        {
+          others.map((w) => (
+            <li>
+              <a class="arrow-link" href={`/work/${w.slug}/`}>
+                {w.title}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <CtaBand heading="Got audio like this?" />
+</BaseLayout>
+
+<style>
+  .eyebrow a {
+    text-decoration: none;
+  }
+
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem 3rem;
+    margin: 0.5rem 0;
+  }
+
+  .meta dt {
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 0.6875rem;
+    margin-bottom: 0.2rem;
+  }
+
+  .meta dd {
+    margin: 0;
+    font-weight: 600;
+  }
+
+  .layout {
+    display: grid;
+    gap: 3rem;
+    align-items: start;
+  }
+
+  .story {
+    display: grid;
+    gap: 2.5rem;
+  }
+
+  .block {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .block h2 {
+    font-size: clamp(1.4rem, 2.6vw, 1.75rem);
+  }
+
+  .block > p {
+    color: var(--text-soft);
+  }
+
+  .links {
+    display: grid;
+    gap: 0.6rem;
+  }
+
+  .videos {
+    display: grid;
+    gap: 1.5rem;
+  }
+
+  .videos__label {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  figure {
+    margin: 0;
+    display: grid;
+    gap: 0.6rem;
+  }
+
+  figcaption {
+    font-size: 0.9375rem;
+  }
+
+  .more {
+    padding-block: clamp(2.5rem, 5vw, 3.5rem);
+  }
+
+  .more__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem 2rem;
+    margin-top: 1.25rem;
+    font-size: 1.125rem;
+  }
+
+  @media (min-width: 62rem) {
+    .layout {
+      grid-template-columns: 1fr 1.05fr;
+      gap: 4rem;
+    }
+
+    .videos {
+      position: sticky;
+      top: 6rem;
+    }
+  }
+</style>

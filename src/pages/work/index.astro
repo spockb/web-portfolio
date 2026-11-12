@@ -1,0 +1,58 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import WorkCard from '../../components/WorkCard.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { work } from '../../data/work';
+import { site } from '../../data/site';
+
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: 'Audio post-production case studies',
+    itemListElement: work.map((w, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: w.title,
+      url: `${site.url}/work/${w.slug}/`,
+    })),
+  },
+];
+---
+
+<BaseLayout
+  title="Work & Case Studies"
+  description="Audio post-production case studies: Subjects and Hot Laps with Noel Miller, 250+ episodes for TMG Studios, and original music and sound design for Company Lot."
+  crumbs={[{ name: 'Work', href: '/work/' }]}
+  schema={schema}
+>
+  <section class="page-hero">
+    <div class="container page-hero__inner">
+      <p class="eyebrow">Work</p>
+      <h1>Selected work and case studies</h1>
+      <p class="lede">
+        Real shows, the audio problems they came with, and what I did about them. Every project here is public, so you
+        can listen to the result.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2 class="visually-hidden">Case studies</h2>
+      <div class="grid">
+        {work.map((w) => <WorkCard item={w} />)}
+      </div>
+    </div>
+  </section>
+
+  <CtaBand heading="Have a show like these?" />
+</BaseLayout>
+
+<style>
+  .grid {
+    display: grid;
+    gap: 1.25rem;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
+  }
+</style>

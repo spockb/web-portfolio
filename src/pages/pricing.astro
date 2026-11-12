@@ -1,0 +1,238 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import FaqList from '../components/FaqList.astro';
+import CtaBand from '../components/CtaBand.astro';
+import { jobs, formats } from '../data/services';
+import { site } from '../data/site';
+
+const faqs = [
+  {
+    q: 'Why "starting at" and not a fixed price?',
+    a: 'Because a quiet two-mic podcast and a six-lav outdoor shoot are different amounts of work. The starting price covers a straightforward recording. You always get one flat quote before I begin, and it does not change unless the scope does.',
+  },
+  {
+    q: 'What makes a project cost more?',
+    a: 'Longer runtime, more microphones, difficult recording conditions such as wind, echo or heavy mic bleed, extra sound design or music, and rush turnaround.',
+  },
+  {
+    q: 'Do ongoing shows get a better rate?',
+    a: 'Yes. Shows that commit to four or more episodes a month get a lower per-episode rate and a fixed delivery schedule.',
+  },
+  {
+    q: 'Is there a rush fee?',
+    a: `Standard turnaround is ${site.turnaround}. Faster delivery is available when my schedule allows and is quoted as a rush.`,
+  },
+  {
+    q: 'Are revisions included?',
+    a: site.revisions,
+  },
+  {
+    q: 'How do I pay?',
+    a: 'By invoice. One-off projects are billed on delivery and recurring shows are billed monthly.',
+  },
+];
+
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.map((f) => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a },
+    })),
+  },
+];
+---
+
+<BaseLayout
+  title="Pricing: Audio Editing, Mixing & Mastering"
+  description="Starting prices for audio repair, editing, mixing, mastering and original music. Flat quotes before work starts, with lower rates for ongoing shows."
+  crumbs={[{ name: 'Pricing', href: '/pricing/' }]}
+  schema={schema}
+>
+  <section class="page-hero">
+    <div class="container page-hero__inner">
+      <p class="eyebrow">Pricing</p>
+      <h1>Flat prices, quoted before I start.</h1>
+      <p class="lede">
+        Every recording is different, so these are starting points. Tell me about the project and you will get one
+        fixed price. No hourly billing.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="plans">
+        {
+          jobs.map((s) => (
+            <article class="plan card">
+              <h2>{s.name}</h2>
+              <p class="plan__price">
+                <span class="mono muted">From</span>
+                <strong>${s.priceFrom}</strong>
+                <span class="muted">{s.priceUnit}</span>
+              </p>
+              <ul class="check-list">
+                {s.includes.slice(0, 5).map((i) => (
+                  <li>{i}</li>
+                ))}
+              </ul>
+              <div class="plan__foot">
+                <a class="btn btn--ghost btn--sm" href={`/services/${s.slug}/`}>
+                  Details
+                </a>
+                <a class="btn btn--primary btn--sm" href="/contact/">
+                  Get a quote
+                </a>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+
+      <div class="by-type">
+        <h2>By type of project</h2>
+        <ul>
+          {
+            formats.map((s) => (
+              <li>
+                <a href={`/services/${s.slug}/`}>{s.name}</a>
+                <span class="mono">
+                  From ${s.priceFrom} <span class="muted">{s.priceUnit}</span>
+                </span>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      <div class="notes">
+        <div class="note card">
+          <h3>Ongoing shows</h3>
+          <p class="muted">
+            Four or more episodes a month gets a lower per-episode rate and a delivery day you can plan around.
+          </p>
+        </div>
+        <div class="note card">
+          <h3>Rush turnaround</h3>
+          <p class="muted">
+            Standard delivery is {site.turnaround}. Need it sooner? Put the deadline in the quote form.
+          </p>
+        </div>
+        <div class="note card">
+          <h3>Not sure what you need?</h3>
+          <p class="muted">Send a sample. I will tell you what is fixable and what it will cost.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--raised">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Questions</p>
+        <h2>Pricing questions.</h2>
+      </div>
+      <FaqList faqs={faqs} />
+    </div>
+  </section>
+
+  <CtaBand heading="Get a flat quote for your project." />
+</BaseLayout>
+
+<style>
+  .plans {
+    display: grid;
+    gap: 1.25rem;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+  }
+
+  .by-type {
+    margin-top: 3rem;
+  }
+
+  .by-type h2 {
+    font-size: 1.4rem;
+    letter-spacing: -0.02em;
+    margin-bottom: 1rem;
+  }
+
+  .by-type ul {
+    border-top: 1px solid var(--line);
+  }
+
+  .by-type li {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.4rem 1.5rem;
+    padding-block: 1rem;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .by-type a {
+    font-weight: 500;
+  }
+
+  .plan {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    padding: clamp(1.5rem, 3vw, 2rem);
+  }
+
+  .plan h2 {
+    font-size: 1.4rem;
+    letter-spacing: -0.02em;
+  }
+
+  .plan__price {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding-bottom: 1.25rem;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .plan__price strong {
+    font-family: var(--font-display);
+    font-size: 2.75rem;
+    font-weight: 650;
+    letter-spacing: -0.04em;
+    line-height: 1;
+  }
+
+  .plan .check-list {
+    font-size: 0.975rem;
+  }
+
+  .plan__foot {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-top: auto;
+    padding-top: 0.5rem;
+  }
+
+  .notes {
+    display: grid;
+    gap: 1.25rem;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
+    margin-top: 3rem;
+  }
+
+  .note {
+    display: grid;
+    gap: 0.5rem;
+    padding: 1.5rem;
+    background: transparent;
+  }
+
+  .note p {
+    font-size: 0.975rem;
+  }
+</style>

@@ -1,0 +1,82 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ServiceCard from '../../components/ServiceCard.astro';
+import ProcessSteps from '../../components/ProcessSteps.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { services, jobs, formats } from '../../data/services';
+import { site } from '../../data/site';
+
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: 'Audio post-production services',
+    itemListElement: services.map((s, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: s.name,
+      url: `${site.url}/services/${s.slug}/`,
+    })),
+  },
+];
+---
+
+<BaseLayout
+  title="Audio Post-Production Services"
+  description="Remote audio services for anything with a voice in it: audio repair and noise removal, audio editing, mixing and mastering, sound design and original music."
+  crumbs={[{ name: 'Services', href: '/services/' }]}
+  schema={schema}
+>
+  <section class="page-hero">
+    <div class="container page-hero__inner">
+      <p class="eyebrow">Services</p>
+      <h1>Audio post-production services</h1>
+      <p class="lede">
+        Repair, editing, mixing and music for any recording built around a voice, on one file or every week. All remote, all at
+        a flat price agreed before I start, with a typical turnaround of {site.turnaround}.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2 class="visually-hidden">Services by type of work</h2>
+      <div class="grid">
+        {jobs.map((s, i) => <ServiceCard service={s} index={i} />)}
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--raised">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">By type of project</p>
+        <h2>What are you making?</h2>
+        <p class="lede">The same services, put together for the kind of project you have.</p>
+      </div>
+      <div class="grid">
+        {formats.map((s, i) => <ServiceCard service={s} index={i} />)}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">How it works</p>
+        <h2>From raw files to a finished mix.</h2>
+      </div>
+      <ProcessSteps />
+    </div>
+  </section>
+
+  <CtaBand />
+</BaseLayout>
+
+<style>
+  .grid {
+    display: grid;
+    gap: 1.25rem;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+  }
+</style>

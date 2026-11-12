@@ -1,0 +1,46 @@
+---
+import { process } from '../data/site';
+---
+
+<ol class="steps">
+  {
+    process.map((step, i) => (
+      <li class="step">
+        <span class="step__num mono" aria-hidden="true">
+          {String(i + 1).padStart(2, '0')}
+        </span>
+        <h3>{step.title}</h3>
+        <p class="muted">{step.body}</p>
+      </li>
+    ))
+  }
+</ol>
+
+<style>
+  .steps {
+    display: grid;
+    gap: 2rem 1.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
+    counter-reset: step;
+  }
+
+  .step {
+    display: grid;
+    gap: 0.7rem;
+    align-content: start;
+    padding-top: 1.25rem;
+    border-top: 2px solid var(--line-strong);
+  }
+
+  .step:first-child {
+    border-top-color: var(--accent);
+  }
+
+  .step__num {
+    color: var(--accent);
+  }
+
+  .step p {
+    font-size: 0.975rem;
+  }
+</style>

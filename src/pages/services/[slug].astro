@@ -1,0 +1,284 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import WorkCard from '../../components/WorkCard.astro';
+import FaqList from '../../components/FaqList.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { services, type Service } from '../../data/services';
+import { getWork } from '../../data/work';
+import { site } from '../../data/site';
+
+export function getStaticPaths() {
+  return services.map((service) => ({ params: { slug: service.slug }, props: { service } }));
+}
+
+interface Props {
+  service: Service;
+}
+
+const { service } = Astro.props;
+const related = service.work.map(getWork);
+const others = services.filter((s) => s.slug !== service.slug);
+
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: service.name,
+    serviceType: service.name,
+    description: service.metaDescription,
+    url: `${site.url}/services/${service.slug}/`,
+    provider: { '@id': `${site.url}/#business`, '@type': 'ProfessionalService', name: site.brand, url: site.url },
+    areaServed: 'Worldwide',
+    offers: {
+      '@type': 'Offer',
+      priceCurrency: 'USD',
+      priceSpecification: {
+        '@type': 'PriceSpecification',
+        minPrice: service.priceFrom,
+        priceCurrency: 'USD',
+      },
+    },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: service.faqs.map((f) => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a },
+    })),
+  },
+];
+---
+
+<BaseLayout
+  title={service.metaTitle}
+  description={service.metaDescription}
+  crumbs={[
+    { name: 'Services', href: '/services/' },
+    { name: service.name, href: `/services/${service.slug}/` },
+  ]}
+  schema={schema}
+>
+  <section class="page-hero">
+    <div class="container page-hero__inner">
+      <p class="eyebrow"><a href="/services/">Services</a></p>
+      <h1>{service.h1}</h1>
+      <p class="lede">{service.intro}</p>
+      <div class="page-hero__actions">
+        <a class="btn btn--primary" href="/contact/">Get a quote</a>
+        <span class="price mono">From ${service.priceFrom} <span class="muted">{service.priceUnit}</span></span>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">What I solve</p>
+        <h2>Problems this fixes.</h2>
+      </div>
+      <ul class="problems">
+        {
+          service.problems.map((p) => (
+            <li class="problem card">
+              <h3>{p.title}</h3>
+              <p class="muted">{p.body}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="section section--raised">
+    <div class="container split">
+      <div>
+        <div class="section-head">
+          <p class="eyebrow">What you get</p>
+          <h2>Included.</h2>
+        </div>
+        <ul class="check-list">
+          {service.includes.map((item) => <li>{item}</li>)}
+        </ul>
+      </div>
+
+      <aside class="pricing card">
+        <p class="mono muted">Starting at</p>
+        <p class="pricing__amount">${service.priceFrom}</p>
+        <p class="muted">{service.priceUnit}</p>
+        <h3>What changes the price</h3>
+        <ul class="factor-list">
+          {service.priceFactors.map((f) => <li>{f}</li>)}
+        </ul>
+        <p class="muted small">
+          You get one flat quote before any work starts. Typical turnaround is {site.turnaround}; rush is available.
+        </p>
+        <a class="btn btn--primary" href="/contact/">Get a quote</a>
+      </aside>
+    </div>
+  </section>
+
+  {
+    related.length > 0 && (
+      <section class="section">
+        <div class="container">
+          <div class="section-head">
+            <p class="eyebrow">Related work</p>
+            <h2>Where I have done this.</h2>
+          </div>
+          <div class="work-grid">
+            {related.map((w) => (
+              <WorkCard item={w} />
+            ))}
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  <section class="section section--raised">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Questions</p>
+        <h2>{service.name}: common questions.</h2>
+      </div>
+      <FaqList faqs={service.faqs} />
+    </div>
+  </section>
+
+  <section class="section others">
+    <div class="container">
+      <p class="eyebrow">Other services</p>
+      <ul class="others__list">
+        {
+          others.map((s) => (
+            <li>
+              <a class="arrow-link" href={`/services/${s.slug}/`}>
+                {s.name}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <CtaBand />
+</BaseLayout>
+
+<style>
+  .eyebrow a {
+    text-decoration: none;
+  }
+
+  .price {
+    align-self: center;
+    font-size: 0.9375rem;
+  }
+
+  .problems {
+    display: grid;
+    gap: 1.25rem;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+  }
+
+  .problem {
+    display: grid;
+    gap: 0.7rem;
+    align-content: start;
+    padding: 1.6rem;
+    border-top: 2px solid var(--accent);
+  }
+
+  .problem p {
+    font-size: 0.975rem;
+  }
+
+  .split {
+    display: grid;
+    gap: 2.5rem;
+    align-items: start;
+  }
+
+  .pricing {
+    display: grid;
+    gap: 0.75rem;
+    padding: clamp(1.5rem, 3vw, 2rem);
+    background: var(--bg);
+    justify-items: start;
+  }
+
+  .pricing__amount {
+    font-family: var(--font-display);
+    font-size: clamp(2.75rem, 6vw, 3.75rem);
+    font-weight: 650;
+    letter-spacing: -0.04em;
+    line-height: 1;
+  }
+
+  .pricing h3 {
+    font-family: var(--font-body);
+    font-size: 0.9375rem;
+    letter-spacing: 0;
+    margin-top: 1rem;
+  }
+
+  .factor-list {
+    display: grid;
+    gap: 0.4rem;
+    color: var(--text-soft);
+    font-size: 0.9375rem;
+  }
+
+  .factor-list li {
+    padding-left: 1.1rem;
+    position: relative;
+  }
+
+  .factor-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.65em;
+    width: 0.4rem;
+    height: 0.4rem;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+
+  .small {
+    font-size: 0.875rem;
+    margin-block: 0.5rem;
+  }
+
+  .work-grid {
+    display: grid;
+    gap: 1.25rem;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 26rem));
+  }
+
+  .others {
+    padding-bottom: 0;
+  }
+
+  .others__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem 2rem;
+    margin-top: 1.25rem;
+    font-size: 1.125rem;
+  }
+
+  @media (min-width: 56rem) {
+    .split {
+      grid-template-columns: 1.3fr 1fr;
+      gap: 4rem;
+    }
+
+    .pricing {
+      position: sticky;
+      top: 6rem;
+    }
+  }
+</style>

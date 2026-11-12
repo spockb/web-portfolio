@@ -1,0 +1,74 @@
+---
+// Placeholder quotes are shown only in development. The section is left out
+// of production builds until real quotes are added in src/data/site.ts.
+import { testimonials } from '../data/site';
+
+const dev = import.meta.env.DEV;
+const items = testimonials.filter((t) => dev || !t.placeholder);
+---
+
+{
+  items.length > 0 && (
+    <section class="section">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow">From clients</p>
+          <h2>What it is like to work together.</h2>
+        </div>
+        <div class="quotes">
+          {items.map((t) => (
+            <figure class:list={['quote card', { 'dev-placeholder': t.placeholder }]}>
+              {t.placeholder && <p class="dev-note">Placeholder, hidden in production</p>}
+              <blockquote>
+                <p>{t.quote}</p>
+              </blockquote>
+              <figcaption>
+                <strong>{t.name}</strong>
+                <span class="mono muted">{t.role}</span>
+              </figcaption>
+            </figure>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+<style>
+  .quotes {
+    display: grid;
+    gap: 1.25rem;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
+  }
+
+  .quote {
+    margin: 0;
+    display: grid;
+    gap: 1.5rem;
+    align-content: space-between;
+    padding: clamp(1.5rem, 3vw, 2.25rem);
+  }
+
+  blockquote {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: clamp(1.15rem, 2vw, 1.4rem);
+    line-height: 1.4;
+    letter-spacing: -0.01em;
+  }
+
+  blockquote p::before {
+    content: '“';
+    color: var(--accent);
+  }
+
+  blockquote p::after {
+    content: '”';
+    color: var(--accent);
+  }
+
+  figcaption {
+    display: grid;
+    gap: 0.2rem;
+  }
+</style>

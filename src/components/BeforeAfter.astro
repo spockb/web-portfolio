@@ -1,0 +1,236 @@
+---
+// Before/after audio comparison. Entries without both audio files are shown
+// only in development, so the section disappears from production builds
+// until real clips are added in src/data/site.ts.
+import { beforeAfter } from '../data/site';
+
+const dev = import.meta.env.DEV;
+const items = beforeAfter.filter((i) => dev || (i.before && i.after));
+---
+
+{
+  items.length > 0 && (
+    <section class="section" id="before-after">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow">Before and after</p>
+          <h2>Hear the difference.</h2>
+          <p class="lede">
+            The same few seconds, raw and finished. Switch between them while it plays. Headphones help.
+          </p>
+        </div>
+
+        <div class="ab-grid">
+          {items.map((item) => {
+            const ready = Boolean(item.before && item.after);
+            return (
+              <article class:list={['ab card', { 'dev-placeholder': !ready }]} data-ab={ready ? '' : undefined}>
+                {!ready && <p class="dev-note">Placeholder, hidden in production until audio is added</p>}
+                <p class="mono muted">{item.source}</p>
+                <h3>{item.title}</h3>
+                <p class="muted ab__note">{item.note}</p>
+
+                {ready && (
+                  <>
+                    <audio preload="none" src={item.before} data-track="before" />
+                    <audio preload="none" src={item.after} data-track="after" />
+                  </>
+                )}
+
+                <div class="ab__controls">
+                  <button class="ab__play" type="button" data-play disabled={!ready} aria-label={`Play ${item.title}`}>
+                    <svg class="icon-play" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+                      <path d="M8 5.5v13l11-6.5z" fill="currentColor" />
+                    </svg>
+                    <svg class="icon-pause" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+                      <path d="M7 5h4v14H7zM13 5h4v14h-4z" fill="currentColor" />
+                    </svg>
+                  </button>
+                  <div class="ab__switch" role="group" aria-label="Version">
+                    <button type="button" data-version="before" aria-pressed="true" disabled={!ready}>
+                      Before
+                    </button>
+                    <button type="button" data-version="after" aria-pressed="false" disabled={!ready}>
+                      After
+                    </button>
+                  </div>
+                </div>
+                <div class="ab__bar" aria-hidden="true">
+                  <div class="ab__fill" data-fill />
+                </div>
+              </article>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+<script>
+  const players = [...document.querySelectorAll<HTMLElement>('[data-ab]')];
+
+  players.forEach((el) => {
+    const tracks = {
+      before: el.querySelector<HTMLAudioElement>('[data-track="before"]')!,
+      after: el.querySelector<HTMLAudioElement>('[data-track="after"]')!,
+    };
+    const playBtn = el.querySelector<HTMLButtonElement>('[data-play]')!;
+    const versionBtns = [...el.querySelectorAll<HTMLButtonElement>('[data-version]')];
+    const fill = el.querySelector<HTMLElement>('[data-fill]')!;
+    let active: 'before' | 'after' = 'before';
+
+    const setPlaying = (on: boolean) => el.classList.toggle('is-playing', on);
+
+    const stop = () => {
+      tracks.before.pause();
+      tracks.after.pause();
+      setPlaying(false);
+    };
+
+    el.addEventListener('ab:stop', stop);
+
+    playBtn.addEventListener('click', () => {
+      if (el.classList.contains('is-playing')) {
+        stop();
+        return;
+      }
+      players.filter((p) => p !== el).forEach((p) => p.dispatchEvent(new Event('ab:stop')));
+      tracks[active].play();
+      setPlaying(true);
+    });
+
+    versionBtns.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const next = btn.dataset.version as 'before' | 'after';
+        if (next === active) return;
+        const wasPlaying = el.classList.contains('is-playing');
+        const time = tracks[active].currentTime;
+        tracks[active].pause();
+        active = next;
+        tracks[active].currentTime = time;
+        if (wasPlaying) tracks[active].play();
+        versionBtns.forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
+        el.classList.toggle('is-after', active === 'after');
+      });
+    });
+
+    Object.values(tracks).forEach((audio) => {
+      audio.addEventListener('timeupdate', () => {
+        if (audio !== tracks[active] || !audio.duration) return;
+        fill.style.width = `${(audio.currentTime / audio.duration) * 100}%`;
+      });
+      audio.addEventListener('ended', () => {
+        tracks.before.currentTime = 0;
+        tracks.after.currentTime = 0;
+        fill.style.width = '0%';
+        setPlaying(false);
+      });
+    });
+  });
+</script>
+
+<style>
+  .ab-grid {
+    display: grid;
+    gap: 1.25rem;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr));
+  }
+
+  .ab {
+    display: grid;
+    gap: 0.75rem;
+    align-content: start;
+    padding: clamp(1.25rem, 3vw, 1.75rem);
+  }
+
+  .ab__note {
+    font-size: 0.975rem;
+  }
+
+  .ab__controls {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    margin-top: 0.75rem;
+  }
+
+  .ab__play {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 3rem;
+    height: 3rem;
+    border: 0;
+    border-radius: 50%;
+    background: var(--accent);
+    color: var(--accent-ink);
+    cursor: pointer;
+  }
+
+  .ab__play:hover:not(:disabled) {
+    background: var(--accent-strong);
+  }
+
+  .icon-pause,
+  .ab:global(.is-playing) .icon-play {
+    display: none;
+  }
+
+  .ab:global(.is-playing) .icon-pause {
+    display: block;
+  }
+
+  .ab__switch {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    flex: 1;
+    padding: 0.25rem;
+    border: 1px solid var(--line-strong);
+    border-radius: 999px;
+  }
+
+  .ab__switch button {
+    min-height: 2.5rem;
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    color: var(--text-soft);
+    font: inherit;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  .ab__switch button[aria-pressed='true'] {
+    background: var(--surface-2);
+    color: var(--text);
+  }
+
+  .ab__switch button[data-version='after'][aria-pressed='true'] {
+    background: var(--accent);
+    color: var(--accent-ink);
+  }
+
+  button:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+
+  .ab__bar {
+    height: 3px;
+    border-radius: 3px;
+    background: var(--line);
+    overflow: hidden;
+  }
+
+  .ab__fill {
+    width: 0;
+    height: 100%;
+    background: var(--noise);
+  }
+
+  .ab:global(.is-after) .ab__fill {
+    background: var(--accent);
+  }
+</style>
